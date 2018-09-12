@@ -78,7 +78,7 @@
 			// Assert
 			Assert.AreEqual(expectedScore, game.score());
 		}
-		  
+		
 		private void rollMany(int numberOfRolls, int pinsKnockedOver)
 		{
 			for (int i = 0; i < numberOfRolls; i++)

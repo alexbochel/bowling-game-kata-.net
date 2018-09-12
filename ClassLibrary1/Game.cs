@@ -27,8 +27,7 @@ namespace BowlingGame
 
 			if (frameForCurrentRoll.rollNumber == firstRoll)
 			{
-				frameForCurrentRoll.scoreForFirstRoll = pointsScored;
-				frameForCurrentRoll.rollNumber++;
+				scoreFirstRoll(frameForCurrentRoll, pointsScored);
 
 				if (frameForCurrentRoll.scoreForFirstRoll == scoreSignifyingStrike)
 				{
@@ -45,6 +44,12 @@ namespace BowlingGame
 		{
 			frameForCurrentRoll.totalScoreForFrame = pointsScored;
 			currentFrame++;
+		}
+
+		private void scoreFirstRoll(Frame frameForCurrentRoll, int pointsScored)
+		{
+			frameForCurrentRoll.scoreForFirstRoll = pointsScored;
+			frameForCurrentRoll.rollNumber++;
 		}
 
 		private void scoreSecondRollAndFinishFrame(Frame frameForCurrentRoll, int pointsScored)
@@ -74,5 +79,7 @@ namespace BowlingGame
 
 			return _score;
 		}
+
+	
 	}
 }
