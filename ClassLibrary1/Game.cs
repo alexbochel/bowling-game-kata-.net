@@ -9,6 +9,9 @@ namespace BowlingGame
 		private int _score = 0;
 		private List<Frame> frames = new List<Frame>();
 		private int currentFrame = 0;
+		private int scoreSignifyingStrike = 10;
+		private int scoreSignifyingSpare = 10;
+		private int firstRoll = 0;
 
 		public Game()
 		{
@@ -22,23 +25,33 @@ namespace BowlingGame
 		{
 			Frame frameForCurrentRoll = frames[currentFrame];
 
-			if (frameForCurrentRoll.rollNumber == 0)
+			if (frameForCurrentRoll.rollNumber == firstRoll)
 			{
 				frameForCurrentRoll.scoreForFirstRoll = pointsScored;
 				frameForCurrentRoll.rollNumber++;
 
-				if (frameForCurrentRoll.scoreForFirstRoll == 10)
+				if (frameForCurrentRoll.scoreForFirstRoll == scoreSignifyingStrike)
 				{
-					frameForCurrentRoll.totalScoreForFrame = pointsScored;
-					currentFrame++;
+					handleRollStrike(frameForCurrentRoll, pointsScored);
 				}
 			}
 			else
 			{
-				frameForCurrentRoll.scoreForSecondRoll = pointsScored;
-				frameForCurrentRoll.totalScoreForFrame = frameForCurrentRoll.scoreForFirstRoll + frameForCurrentRoll.scoreForSecondRoll;
-				currentFrame++;
+				scoreSecondRollAndFinishFrame(frameForCurrentRoll, pointsScored);
 			}
+		}
+
+		private void handleRollStrike(Frame frameForCurrentRoll, int pointsScored)
+		{
+			frameForCurrentRoll.totalScoreForFrame = pointsScored;
+			currentFrame++;
+		}
+
+		private void scoreSecondRollAndFinishFrame(Frame frameForCurrentRoll, int pointsScored)
+		{
+			frameForCurrentRoll.scoreForSecondRoll = pointsScored;
+			frameForCurrentRoll.totalScoreForFrame = frameForCurrentRoll.scoreForFirstRoll + frameForCurrentRoll.scoreForSecondRoll;
+			currentFrame++;
 		}
 
 		public int score()
@@ -47,11 +60,11 @@ namespace BowlingGame
 			{
 				Frame currentFrame = frames[i];
 
-				if (currentFrame.scoreForFirstRoll == 10)
+				if (currentFrame.scoreForFirstRoll == scoreSignifyingStrike)
 				{
 					currentFrame.totalScoreForFrame += frames[i + 1].totalScoreForFrame;
 				}
-				else if (currentFrame.scoreForFirstRoll + currentFrame.scoreForSecondRoll == 10)
+				else if (currentFrame.scoreForFirstRoll + currentFrame.scoreForSecondRoll == scoreSignifyingSpare)
 				{
 					currentFrame.totalScoreForFrame += frames[i + 1].scoreForFirstRoll;
 				}
