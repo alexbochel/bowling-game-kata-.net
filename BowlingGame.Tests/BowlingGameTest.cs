@@ -78,7 +78,20 @@
 			// Assert
 			Assert.AreEqual(expectedScore, game.score());
 		}
-		
+
+		[Test]
+		public void testPerfectGame()
+		{
+			// Arrange
+			int expectedScore = 300;
+
+			// Act
+			rollMany(12, 10);
+
+			// Assert
+			Assert.AreEqual(expectedScore, game.score());
+		}
+
 		private void rollMany(int numberOfRolls, int pinsKnockedOver)
 		{
 			for (int i = 0; i < numberOfRolls; i++)
