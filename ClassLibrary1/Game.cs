@@ -67,19 +67,31 @@ namespace BowlingGame
 
 				if (currentFrame.scoreForFirstRoll == scoreSignifyingStrike)
 				{
-					currentFrame.totalScoreForFrame += frames[i + 1].totalScoreForFrame;
+					addStrikeBonusToTotalScoreFromNextFrame(currentFrame, i);
 				}
 				else if (currentFrame.scoreForFirstRoll + currentFrame.scoreForSecondRoll == scoreSignifyingSpare)
 				{
-					currentFrame.totalScoreForFrame += frames[i + 1].scoreForFirstRoll;
+					addSpareBonusToTotalScoreFromNextFrame(currentFrame, i);
 				}
-
-				_score += currentFrame.totalScoreForFrame;
+				else
+				{
+					_score += currentFrame.totalScoreForFrame;
+				}
 			}
-
 			return _score;
 		}
 
-	
+		private void addStrikeBonusToTotalScoreFromNextFrame(Frame currentFrame, int frameThatStrikeWasRolled)
+		{
+			currentFrame.totalScoreForFrame += frames[frameThatStrikeWasRolled + 1].totalScoreForFrame;
+			_score += currentFrame.totalScoreForFrame;
+		}
+
+		private void addSpareBonusToTotalScoreFromNextFrame(Frame currentFrame, int frameThatSpareWasRolled)
+		{
+			currentFrame.totalScoreForFrame += frames[frameThatSpareWasRolled + 1].scoreForFirstRoll;
+			_score += currentFrame.totalScoreForFrame;
+		}
+
 	}
 }
