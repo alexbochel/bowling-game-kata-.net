@@ -8,28 +8,58 @@ namespace BowlingGame
 	{
 		private int _score = 0;
 		private List<Frame> frames = new List<Frame>();
-		private int currentRoll = 0;
+		private int currentFrame = 0;
 
 		public Game()
 		{
-			
+			for (int i = 0; i < 10; i++)
+			{
+				frames.Add(new Frame());
+			}
 		}
 
 		public void roll(int pointsScored)
 		{
-			
+			Frame frameForCurrentRoll = frames[currentFrame];
 
-			_score += pointsScored;
+			if (frameForCurrentRoll.rollNumber == 0)
+			{
+				frameForCurrentRoll.scoreForFirstRoll = pointsScored;
+				frameForCurrentRoll.rollNumber++;
+
+				if (frameForCurrentRoll.scoreForFirstRoll == 10)
+				{
+					frameForCurrentRoll.totalScoreForFrame = pointsScored;
+					currentFrame++;
+				}
+			}
+			else
+			{
+				frameForCurrentRoll.scoreForSecondRoll = pointsScored;
+				frameForCurrentRoll.totalScoreForFrame = frameForCurrentRoll.scoreForFirstRoll + frameForCurrentRoll.scoreForSecondRoll;
+				currentFrame++;
+			}
 		}
 
 		public int score()
 		{
-			foreach (Frame allFrames in frames)
+			for (int i = 0; i < 10; i++)
 			{
-				
+				Frame currentFrame = frames[i];
+
+				if (currentFrame.scoreForFirstRoll == 10)
+				{
+					currentFrame.totalScoreForFrame += frames[i + 1].totalScoreForFrame;
+				}
+				else if (currentFrame.scoreForFirstRoll + currentFrame.scoreForSecondRoll == 10)
+				{
+					currentFrame.totalScoreForFrame += frames[i + 1].scoreForFirstRoll;
+				}
+
+				_score += currentFrame.totalScoreForFrame;
 			}
 
-			return -1;
+			return _score;
 		}
 	}
 }
