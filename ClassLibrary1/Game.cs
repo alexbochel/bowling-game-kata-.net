@@ -9,6 +9,9 @@ namespace BowlingGame
 		private int _score = 0;
 		private List<Frame> frames = new List<Frame>();
 		private int currentFrame = 0;
+		private int scoreSignifyingStrike = 10;
+		private int scoreSignifyingSpare = 10;
+		private int firstRoll = 0;
 
 		public Game()
 		{
@@ -22,23 +25,38 @@ namespace BowlingGame
 		{
 			Frame frameForCurrentRoll = frames[currentFrame];
 
-			if (frameForCurrentRoll.rollNumber == 0)
+			if (frameForCurrentRoll.rollNumber == firstRoll)
 			{
-				frameForCurrentRoll.scoreForFirstRoll = pointsScored;
-				frameForCurrentRoll.rollNumber++;
+				scoreFirstRoll(frameForCurrentRoll, pointsScored);
 
-				if (frameForCurrentRoll.scoreForFirstRoll == 10)
+				if (frameForCurrentRoll.scoreForFirstRoll == scoreSignifyingStrike)
 				{
-					frameForCurrentRoll.totalScoreForFrame = pointsScored;
-					currentFrame++;
+					handleRollStrike(frameForCurrentRoll, pointsScored);
 				}
 			}
 			else
 			{
-				frameForCurrentRoll.scoreForSecondRoll = pointsScored;
-				frameForCurrentRoll.totalScoreForFrame = frameForCurrentRoll.scoreForFirstRoll + frameForCurrentRoll.scoreForSecondRoll;
-				currentFrame++;
+				scoreSecondRollAndFinishFrame(frameForCurrentRoll, pointsScored);
 			}
+		}
+
+		private void handleRollStrike(Frame frameForCurrentRoll, int pointsScored)
+		{
+			frameForCurrentRoll.totalScoreForFrame = pointsScored;
+			currentFrame++;
+		}
+
+		private void scoreFirstRoll(Frame frameForCurrentRoll, int pointsScored)
+		{
+			frameForCurrentRoll.scoreForFirstRoll = pointsScored;
+			frameForCurrentRoll.rollNumber++;
+		}
+
+		private void scoreSecondRollAndFinishFrame(Frame frameForCurrentRoll, int pointsScored)
+		{
+			frameForCurrentRoll.scoreForSecondRoll = pointsScored;
+			frameForCurrentRoll.totalScoreForFrame = frameForCurrentRoll.scoreForFirstRoll + frameForCurrentRoll.scoreForSecondRoll;
+			currentFrame++;
 		}
 
 		public int score()
@@ -47,19 +65,42 @@ namespace BowlingGame
 			{
 				Frame currentFrame = frames[i];
 
-				if (currentFrame.scoreForFirstRoll == 10)
+				if (firstRollOnFrameIsAStrike(currentFrame))
 				{
-					currentFrame.totalScoreForFrame += frames[i + 1].totalScoreForFrame;
+					addStrikeBonusToTotalScoreFromNextFrame(currentFrame, i);
 				}
-				else if (currentFrame.scoreForFirstRoll + currentFrame.scoreForSecondRoll == 10)
+				else if (scoreOnFrameIsASpare(currentFrame))
 				{
-					currentFrame.totalScoreForFrame += frames[i + 1].scoreForFirstRoll;
+					addSpareBonusToTotalScoreFromNextFrame(currentFrame, i);
 				}
-
-				_score += currentFrame.totalScoreForFrame;
+				else
+				{
+					_score += currentFrame.totalScoreForFrame;
+				}
 			}
-
 			return _score;
+		}
+
+		private void addStrikeBonusToTotalScoreFromNextFrame(Frame currentFrame, int frameThatStrikeWasRolled)
+		{
+			currentFrame.totalScoreForFrame += frames[frameThatStrikeWasRolled + 1].totalScoreForFrame;
+			_score += currentFrame.totalScoreForFrame;
+		}
+
+		private void addSpareBonusToTotalScoreFromNextFrame(Frame currentFrame, int frameThatSpareWasRolled)
+		{
+			currentFrame.totalScoreForFrame += frames[frameThatSpareWasRolled + 1].scoreForFirstRoll;
+			_score += currentFrame.totalScoreForFrame;
+		}
+
+		private bool firstRollOnFrameIsAStrike(Frame currentFrame)
+		{
+			return currentFrame.scoreForFirstRoll == scoreSignifyingStrike;
+		}
+
+		private bool scoreOnFrameIsASpare(Frame currentFrame)
+		{
+			return currentFrame.scoreForFirstRoll + currentFrame.scoreForSecondRoll == scoreSignifyingSpare;
 		}
 	}
 }
