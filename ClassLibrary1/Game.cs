@@ -65,11 +65,11 @@ namespace BowlingGame
 			{
 				Frame currentFrame = frames[i];
 
-				if (currentFrame.scoreForFirstRoll == scoreSignifyingStrike)
+				if (firstRollOnFrameIsAStrike(currentFrame))
 				{
 					addStrikeBonusToTotalScoreFromNextFrame(currentFrame, i);
 				}
-				else if (currentFrame.scoreForFirstRoll + currentFrame.scoreForSecondRoll == scoreSignifyingSpare)
+				else if (scoreOnFrameIsASpare(currentFrame))
 				{
 					addSpareBonusToTotalScoreFromNextFrame(currentFrame, i);
 				}
@@ -93,5 +93,14 @@ namespace BowlingGame
 			_score += currentFrame.totalScoreForFrame;
 		}
 
+		private bool firstRollOnFrameIsAStrike(Frame currentFrame)
+		{
+			return currentFrame.scoreForFirstRoll == scoreSignifyingStrike;
+		}
+
+		private bool scoreOnFrameIsASpare(Frame currentFrame)
+		{
+			return currentFrame.scoreForFirstRoll + currentFrame.scoreForSecondRoll == scoreSignifyingSpare;
+		}
 	}
 }
