@@ -59,7 +59,23 @@
 			game.roll(3);
 			rollMany(17, 0);
 
-			//Assert
+			// Assert
+			Assert.AreEqual(expectedScore, game.score());
+		}
+
+		[Test]
+		public void testOneStrike()
+		{
+			// Arrange
+			int expectedScore = 24;
+
+			// Act
+			game.roll(10);
+			game.roll(3);
+			game.roll(4);
+			rollMany(16, 0);
+
+			// Assert
 			Assert.AreEqual(expectedScore, game.score());
 		}
 		  

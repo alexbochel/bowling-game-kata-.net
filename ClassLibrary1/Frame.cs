@@ -18,7 +18,8 @@ namespace BowlingGame
 
 		public int totalScoreForFrame
 		{
-			get { return _scoreForSecondRoll + _scoreForFirstRoll; }
+			get { return _totalScoreForFrame; }
+			set { _totalScoreForFrame = value; }
 		}
 
 		public int scoreForFirstRoll
