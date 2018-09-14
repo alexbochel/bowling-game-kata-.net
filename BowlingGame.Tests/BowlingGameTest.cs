@@ -54,8 +54,7 @@
 			int expectedScore = 16;
 
 			// Act
-			game.roll(5);
-			game.roll(5);
+			rollSpare();
 			game.roll(3);
 			rollMany(17, 0);
 
@@ -98,6 +97,12 @@
 			{
 				game.roll(pinsKnockedOver);
 			}
+		}
+
+		private void rollSpare()
+		{
+			game.roll(5);
+			game.roll(5);
 		}
 	}
 }
