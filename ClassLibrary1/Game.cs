@@ -15,7 +15,7 @@ namespace BowlingGame
 
 		public Game()
 		{
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 12; i++)
 			{
 				frames.Add(new Frame());
 			}
@@ -83,7 +83,16 @@ namespace BowlingGame
 
 		private void addStrikeBonusToTotalScoreFromNextFrame(Frame currentFrame, int frameThatStrikeWasRolled)
 		{
-			currentFrame.totalScoreForFrame += frames[frameThatStrikeWasRolled + 1].totalScoreForFrame;
+			if (frames[frameThatStrikeWasRolled + 1].scoreForFirstRoll == 10)
+			{
+				currentFrame.totalScoreForFrame += frames[frameThatStrikeWasRolled + 1].totalScoreForFrame
+					+ frames[frameThatStrikeWasRolled + 1].scoreForFirstRoll;
+			}
+			else
+			{
+				currentFrame.totalScoreForFrame += frames[frameThatStrikeWasRolled + 1].totalScoreForFrame;
+			}
+
 			_score += currentFrame.totalScoreForFrame;
 		}
 
